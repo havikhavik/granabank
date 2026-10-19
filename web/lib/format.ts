@@ -24,3 +24,17 @@ export function formatBalance(balance: string) {
 export function formatExpiration(month: number, year: number) {
   return `${String(month).padStart(2, "0")}/${String(year).slice(-2)}`;
 }
+
+// La fecha se formatea en el servidor (que en producción corre en UTC), así que
+// se fija la zona horaria para mostrar la hora de Argentina.
+const dateTimeFormat = new Intl.DateTimeFormat("es-AR", {
+  dateStyle: "long",
+  timeStyle: "short",
+  hourCycle: "h23", // 14:30 en vez de 2:30 p. m.
+  timeZone: "America/Argentina/Buenos_Aires",
+});
+
+// "2026-10-19T17:30:00.000Z" → "19 de octubre de 2026 a las 14:30"
+export function formatDateTime(iso: string) {
+  return dateTimeFormat.format(new Date(iso));
+}

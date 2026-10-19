@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 // Nombre de la cookie httpOnly donde se guarda el JWT.
 export const SESSION_COOKIE = "session";
@@ -35,6 +35,11 @@ export type MovementList = {
   total: number;
 };
 
+export type MovementDetail = Movement & {
+  description: string | null;
+  card: { brand: Card["brand"]; last4: string };
+};
+
 // GET a la API con el token de la cookie. Solo corre en el servidor:
 // el token nunca llega al JavaScript del navegador.
 export async function apiGet<T>(path: string): Promise<T> {
@@ -49,6 +54,12 @@ export async function apiGet<T>(path: string): Promise<T> {
   // Token vencido o inválido: hay que volver a iniciar sesión.
   if (res.status === 401) {
     redirect("/login");
+  }
+
+  // Recurso inexistente (o ajeno: la API responde 404 igual). Muestra el
+  // not-found.tsx más cercano.
+  if (res.status === 404) {
+    notFound();
   }
 
   if (!res.ok) {
