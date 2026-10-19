@@ -1,0 +1,71 @@
+# Requests para la extensión REST Client de VS Code.
+# Levantar la API con `npm run dev` y ejecutar en orden (el login guarda el token).
+
+@baseUrl = http://localhost:3001
+@token = {{login.response.body.token}}
+@otherToken = {{otherLogin.response.body.token}}
+
+### Health
+GET {{baseUrl}}/health
+
+### Login correcto → 200 con token
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "soygranate@clublanus.com", "password": "GRANATE1@" }
+
+### Login con contraseña incorrecta → 401
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "soygranate@clublanus.com", "password": "otra" }
+
+### Login con body inválido → 400
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "no-es-un-email" }
+
+### Resumen del usuario → 200
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+
+### Sin token → 401
+GET {{baseUrl}}/me
+
+### Movimientos (default: 20 más recientes) → 200
+GET {{baseUrl}}/movements
+Authorization: Bearer {{token}}
+
+### Búsqueda + filtro + paginación → 200
+GET {{baseUrl}}/movements?q=adobe&type=SUBSCRIPTION&limit=5&offset=0
+Authorization: Bearer {{token}}
+
+### Tipo inválido → 400
+GET {{baseUrl}}/movements?type=FOO
+Authorization: Bearer {{token}}
+
+### Detalle de un movimiento propio → 200
+GET {{baseUrl}}/movements/1
+Authorization: Bearer {{token}}
+
+### Id inexistente → 404
+GET {{baseUrl}}/movements/999999
+Authorization: Bearer {{token}}
+
+### Login del segundo usuario (para el caso siguiente)
+# @name otherLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "otro@clublanus.com", "password": "OTRO1234@" }
+
+### Movimientos del segundo usuario
+# @name otherMovements
+GET {{baseUrl}}/movements
+Authorization: Bearer {{otherToken}}
+
+### Movimiento de otro usuario → 404 (no se revela que existe)
+GET {{baseUrl}}/movements/{{otherMovements.response.body.$.items[0].id}}
+Authorization: Bearer {{token}}
