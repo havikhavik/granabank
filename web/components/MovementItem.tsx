@@ -5,7 +5,8 @@ import { formatAmount } from "@/lib/format";
 
 // Ícono y colores por tipo de movimiento. Las clases van completas (no armadas
 // con strings) porque Tailwind solo genera las clases que encuentra literales.
-const typeStyles = {
+// También lo usa el detalle del movimiento.
+export const typeStyles = {
   SUBSCRIPTION: { Icon: ArrowDownUp, text: "text-subscription", bg: "bg-subscription-bg" },
   CASH_IN: { Icon: ArrowDown, text: "text-cash-in", bg: "bg-cash-in-bg" },
   CASH_OUT: { Icon: ArrowUp, text: "text-cash-out", bg: "bg-cash-out-bg" },

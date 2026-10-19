@@ -50,3 +50,13 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **`proxy.ts` solo verifica que exista la cookie.** Es un chequeo rápido para redirigir a `/login`; la validación real del token la hace la API, y si responde 401 la web redirige al login. Costo: con un token vencido, la página empieza a renderizarse antes de redirigir.
 
 **Sin caché de datos.** Las páginas se renderizan en cada request y los `fetch` usan `cache: 'no-store'`, porque son datos personales que cambian. Costo: cada visita consulta la API.
+
+**La búsqueda y el filtro viven en la URL** (`?q=&type=`). La lista se arma en el servidor leyendo `searchParams`, así que se puede compartir, sobrevive a un refresh y el botón "atrás" funciona; el buscador solo actualiza la URL, con un debounce de 300 ms para no consultar la API en cada tecla.
+
+**Solo la lista espera a la API.** Está dentro de un `<Suspense>` con `key` según la búsqueda y el filtro: al cambiarlos se muestra el skeleton de la lista, pero el buscador no se vuelve a montar y no pierde el foco.
+
+**Un 404 de la API se traduce en la página "no encontrado".** `apiGet` llama a `notFound()`, así un movimiento inexistente y uno ajeno se ven igual, como en la API.
+
+**Sin paginación en Movimientos.** Se piden los 50 más recientes (el máximo de la API) y se avisa si hay más. Alcanza para los datos actuales; con más volumen se agregaría paginación o scroll infinito usando `offset`.
+
+**Las fechas se formatean con la zona horaria de Argentina fija**, porque se formatean en el servidor y en producción el servidor corre en UTC.

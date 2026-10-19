@@ -59,3 +59,5 @@ Los montos viajan como string (`"125.00"`) para no perder precisión y las fecha
 Ver [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Mejoras futuras
+
+- Paginación o scroll infinito en Movimientos (hoy se muestran los 50 más recientes).
