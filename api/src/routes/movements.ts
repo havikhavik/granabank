@@ -34,26 +34,8 @@ function toItem(movement: Movement) {
 }
 
 router.get('/', async (req, res) => {
-  const { q, type, limit, offset } = listQuerySchema.parse(req.query);
-
-  const { rows, count } = await Movement.findAndCountAll({
-    // Escapa % y _ para que se busquen como texto y no como comodines de LIKE.
-    where: q ? { counterparty: { [Op.iLike]: `%${q.replace(/[\\%_]/g, '\\$&')}%` } } : {},
-    include: [
-      // Un include con where es un INNER JOIN: solo quedan los movimientos
-      // de tarjetas del usuario autenticado.
-      { model: Card, as: 'card', attributes: [], where: { userId: req.userId } },
-      { model: MovementType, as: 'type', where: type ? { code: type } : undefined },
-    ],
-    // El id desempata movimientos con la misma fecha, así la paginación es estable.
-    order: [
-      ['occurredAt', 'DESC'],
-      ['id', 'DESC'],
-    ],
-    limit,
-    offset,
-  });
-
+  const filters = listQuerySchema.parse(req.query);
+  const { rows, count } = await listUserMovements(req.userId, filters);
   res.json({ items: rows.map(toItem), total: count });
 });
 
@@ -74,13 +56,39 @@ router.get('/:id', async (req, res) => {
   });
 });
 
+// Lista los movimientos de las tarjetas del usuario, con búsqueda, filtro y paginación.
+function listUserMovements(userId: number, { q, type, limit, offset }: z.infer<typeof listQuerySchema>) {
+  return Movement.findAndCountAll({
+    // Escapa % y _ para que se busquen como texto y no como comodines de LIKE.
+    where: q ? { counterparty: { [Op.iLike]: `%${q.replace(/[\\%_]/g, '\\$&')}%` } } : {},
+    include: [
+      // Un include con where es un INNER JOIN: solo quedan los movimientos
+      // de tarjetas del usuario autenticado.
+      { model: Card, as: 'card', attributes: [], where: { userId: userId } },
+      { model: MovementType, as: 'type', where: type ? { code: type } : undefined },
+    ],
+    // El id desempata movimientos con la misma fecha, así la paginación es estable.
+    order: [
+      ['occurredAt', 'DESC'],
+      ['id', 'DESC'],
+    ],
+    limit,
+    offset,
+  });
+}
+
 // Busca el movimiento por id, pero solo si pertenece a una tarjeta del usuario.
 // Devuelve null si no existe o si es de otro usuario.
 // Tiene que incluir el tipo (as: 'type') y la tarjeta (as: 'card'), porque la
 // respuesta usa movement.type y movement.card.brand / last4.
 async function findUserMovement(id: number, userId: number): Promise<Movement | null> {
-  // TODO (yo): verificar que el movimiento pertenezca al usuario autenticado.
-  return null;
+  return Movement.findOne({
+    where: { id },
+    include: [
+      { model: MovementType, as: 'type' },
+      { model: Card, as: 'card', where: { userId } },
+    ],
+  });
 }
 
 export default router;

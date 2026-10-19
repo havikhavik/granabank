@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { HttpError } from '../middlewares/errorHandler.js';
 import { User } from '../models/index.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 
 const router = Router();
 
@@ -30,8 +32,17 @@ router.post('/login', async (req, res) => {
 // El token tiene que llevar el id del usuario en `sub` (como string), firmado
 // con process.env.JWT_SECRET y con vencimiento de 7 días: requireAuth lo lee así.
 async function createTokenIfPasswordMatches(user: User, password: string): Promise<string | null> {
-  // TODO (yo): comparar la contraseña con bcrypt y firmar el JWT.
-  return null;
+  const passwordMatches= await bcrypt.compare(password, user.passwordHash)
+  
+  if(!passwordMatches){
+      return null;
+
+  }else{
+    return jwt.sign({ sub: String(user.id) }, process.env.JWT_SECRET!, {
+    algorithm: 'HS256',
+    expiresIn: '7d',
+  });
+  }
 }
 
 export default router;
