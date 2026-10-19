@@ -37,6 +37,8 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 
 **La pertenencia se verifica en la consulta.** Los movimientos se buscan con un JOIN a la tarjeta filtrado por el usuario autenticado, así nunca se lee un dato ajeno. Un movimiento de otro usuario responde 404, igual que uno inexistente, para no revelar que existe.
 
+**Sin capas de controllers ni services.** Cada ruta valida con Zod, consulta con Sequelize y arma la respuesta. Los endpoints son lecturas, así que un service sería un pasamanos. Si apareciera lógica de dominio (por ejemplo, una transferencia con transacción), se extraería a un service.
+
 **Errores centralizados.** Las rutas lanzan un `HttpError` y un único middleware arma la respuesta `{ error: { code, message } }`; los errores inesperados devuelven 500 sin detalles internos.
 
 **Validación estricta con Zod.** Un `type` o un `limit` fuera de rango responde 400 en lugar de corregirse en silencio, para que el cliente detecte el error.
