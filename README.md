@@ -23,6 +23,19 @@ Para revertir: `npm run db:seed:undo:all` (datos) y `npm run db:migrate:undo:all
 
 Para probar los endpoints: `api/requests.http` (extensión REST Client de VS Code) y `npm test` (tests de integración con vitest + supertest; usan la base del `.env`).
 
+### Web
+
+Con la API corriendo, en otra terminal:
+
+```bash
+cd web
+npm install
+cp .env.example .env.local   # API_URL=http://localhost:3001
+npm run dev                  # http://localhost:3000
+```
+
+Credenciales: `soygranate@clublanus.com` / `GRANATE1@`.
+
 ## Arquitectura
 
 ![Diagrama entidad-relación](docs/DER.png)

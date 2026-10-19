@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Colores y tipografía tomados del diseño (docs/design). */
+@theme {
+  --color-granate: #7a1d2d;
+  --color-background: #f9fafc;
+  --color-ink: #334154;
+  --color-ink-soft: #616e7c;
+  --color-muted: #aaaaaa;
+
+  --color-subscription: #b946ff;
+  --color-subscription-bg: #f3e4ff;
+  --color-cash-in: #7a1d2d;
+  --color-cash-in-bg: #e4d2d5;
+  --color-cash-out: #ef9c55;
+  --color-cash-out-bg: #feead4;
+
+  --font-sans: var(--font-poppins);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-ink);
+}
