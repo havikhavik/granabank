@@ -1,5 +1,13 @@
-import { DataTypes, Model, type CreationOptional, type InferAttributes, type InferCreationAttributes } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  type CreationOptional,
+  type InferAttributes,
+  type InferCreationAttributes,
+  type NonAttribute,
+} from 'sequelize';
 import { sequelize } from '../db.js';
+import type { Card } from './Card.js';
 
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
@@ -7,6 +15,9 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare passwordHash: string;
   declare name: string;
   declare lastName: string;
+
+  // Se completa cuando la consulta usa include.
+  declare cards?: NonAttribute<Card[]>;
 }
 
 User.init(

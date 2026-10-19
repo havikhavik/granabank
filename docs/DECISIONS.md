@@ -11,7 +11,7 @@
 **El saldo vive en la tarjeta**, modelada como tarjeta prepaga del club. Por eso no hay entidad de cuenta y los movimientos referencian a la tarjeta. Si varias tarjetas tuvieran que compartir saldo, se incorporaría una tabla `accounts`.
 
 **Saldo almacenado (desnormalizado), no calculado**, para evitar agregar todos los movimientos en cada lectura.
-<!-- TODO: cómo se mantiene consistente con los movimientos -->
+Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya coherentes entre sí. Si en el futuro se pudieran crear movimientos, el registro del movimiento y la actualización del saldo se harían juntos, en una misma transacción.
 
 **Montos en `numeric(12,2)`**, nunca `float`, para evitar errores de precisión en punto flotante.
 
@@ -30,3 +30,13 @@
 **Dos connection strings de Neon:** la app usa la *pooled* (con un pool chico, `max: 5`, porque en serverless cada función abre sus conexiones) y las migraciones usan la directa, porque el pooler no está pensado para cambios de esquema. Costo: una variable de entorno más.
 
 **El seed calcula el saldo a partir de los movimientos**, así los datos de prueba son consistentes desde el inicio. Incluye un segundo usuario para probar que nadie puede ver movimientos ajenos.
+
+## API
+
+**Autenticación con JWT stateless** (7 días), enviado como `Authorization: Bearer`. La API no guarda sesiones y escala sin estado compartido. Costo: un token no se puede revocar antes de que venza sin agregar una lista negra.
+
+**La pertenencia se verifica en la consulta.** Los movimientos se buscan con un JOIN a la tarjeta filtrado por el usuario autenticado, así nunca se lee un dato ajeno. Un movimiento de otro usuario responde 404, igual que uno inexistente, para no revelar que existe.
+
+**Errores centralizados.** Las rutas lanzan un `HttpError` y un único middleware arma la respuesta `{ error: { code, message } }`; los errores inesperados devuelven 500 sin detalles internos.
+
+**Validación estricta con Zod.** Un `type` o un `limit` fuera de rango responde 400 en lugar de corregirse en silencio, para que el cliente detecte el error.
