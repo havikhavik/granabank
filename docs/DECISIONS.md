@@ -42,3 +42,11 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **Errores centralizados.** Las rutas lanzan un `HttpError` y un único middleware arma la respuesta `{ error: { code, message } }`; los errores inesperados devuelven 500 sin detalles internos.
 
 **Validación estricta con Zod.** Un `type` o un `limit` fuera de rango responde 400 en lugar de corregirse en silencio, para que el cliente detecte el error.
+
+## Web
+
+**El JWT vive en una cookie `httpOnly` y solo lo usa el servidor de Next.** Los datos se piden desde Server Components y el login y el logout son Server Actions, así que el token nunca queda expuesto al JavaScript del navegador (protege contra XSS) y la API no necesita CORS. Costo: cada interacción pasa por el servidor de Next antes de llegar a la API.
+
+**`proxy.ts` solo verifica que exista la cookie.** Es un chequeo rápido para redirigir a `/login`; la validación real del token la hace la API, y si responde 401 la web redirige al login. Costo: con un token vencido, la página empieza a renderizarse antes de redirigir.
+
+**Sin caché de datos.** Las páginas se renderizan en cada request y los `fetch` usan `cache: 'no-store'`, porque son datos personales que cambian. Costo: cada visita consulta la API.
