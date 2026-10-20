@@ -26,6 +26,16 @@ const GRANATE_MOVEMENTS = [
   ['Carga inicial', 'CASH_IN', '1500.00', '2026-09-01T09:00:00-03:00', 'Primera carga de la tarjeta'],
 ];
 
+// Segunda tarjeta del usuario del challenge (Visa), con sus propios movimientos.
+const GRANATE_VISA_MOVEMENTS = [
+  ['Tomás Díaz', 'CASH_OUT', '60.00', '2026-10-18T21:30:00-03:00', 'Pizza del sábado'],
+  ['Disney+', 'SUBSCRIPTION', '13.99', '2026-10-11T08:00:00-03:00'],
+  ['Camila Ruiz', 'CASH_IN', '70.00', '2026-10-09T15:10:00-03:00', 'Parte del regalo'],
+  ['YouTube Premium', 'SUBSCRIPTION', '11.99', '2026-10-04T08:00:00-03:00'],
+  ['Diego Torres', 'CASH_OUT', '45.00', '2026-09-27T19:45:00-03:00'],
+  ['Carga inicial', 'CASH_IN', '400.00', '2026-09-20T09:00:00-03:00', 'Primera carga de la tarjeta'],
+];
+
 // Segundo usuario: sirve para probar que no se puede ver un movimiento ajeno.
 const OTHER_MOVEMENTS = [
   ['Carga inicial', 'CASH_IN', '200.00', '2026-10-01T09:00:00-03:00'],
@@ -65,9 +75,11 @@ module.exports = {
       { returning: true },
     );
 
+    // La Visa va al final para no cambiar los ids de las tarjetas ya existentes.
     const cards = [
-      { user: granate, holderName: 'Soy Granate', brand: 'MASTERCARD', last4: '1234', movements: GRANATE_MOVEMENTS },
-      { user: other, holderName: 'Otro Usuario', brand: 'VISA', last4: '5678', movements: OTHER_MOVEMENTS },
+      { user: granate, holderName: 'Soy Granate', brand: 'MASTERCARD', last4: '1234', expMonth: 2, expYear: 2030, movements: GRANATE_MOVEMENTS },
+      { user: other, holderName: 'Otro Usuario', brand: 'VISA', last4: '5678', expMonth: 2, expYear: 2030, movements: OTHER_MOVEMENTS },
+      { user: granate, holderName: 'Soy Granate', brand: 'VISA', last4: '4821', expMonth: 8, expYear: 2029, movements: GRANATE_VISA_MOVEMENTS },
     ];
 
     for (const card of cards) {
@@ -87,8 +99,8 @@ module.exports = {
             holder_name: card.holderName,
             brand: card.brand,
             last4: card.last4,
-            exp_month: 2,
-            exp_year: 2030,
+            exp_month: card.expMonth,
+            exp_year: card.expYear,
             currency: 'USD',
             balance: (balanceCents / 100).toFixed(2),
           },
