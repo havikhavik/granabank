@@ -60,3 +60,9 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **Sin paginación en Movimientos.** Se piden los 50 más recientes (el máximo de la API) y se avisa si hay más. Alcanza para los datos actuales; con más volumen se agregaría paginación o scroll infinito usando `offset`.
 
 **Las fechas se formatean con la zona horaria de Argentina fija**, porque se formatean en el servidor y en producción el servidor corre en UTC.
+
+**"Últimos movimientos" muestra los de todas las tarjetas del usuario**, ordenados por fecha. Filtrarlos por la tarjeta seleccionada en el carrusel queda como mejora.
+
+**En pantallas grandes se muestra la misma interfaz mobile**, en una columna centrada de 430 px sobre un fondo neutro. El diseño es para celular: así se respeta tal cual, sin mantener un segundo layout. Costo: en escritorio se desaprovecha el ancho.
+
+**Los filtros rápidos se muestran completos** (sin scroll horizontal) para que sean accesibles sin el gesto de deslizar: con mouse, el scroll horizontal no es evidente.
