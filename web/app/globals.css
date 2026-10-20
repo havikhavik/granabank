@@ -18,7 +18,9 @@
   --font-sans: var(--font-poppins);
 }
 
+/* Fondo neutro fuera de la columna de la app (solo se ve en pantallas anchas). */
 body {
-  background: var(--color-background);
+  background: #e5e7eb;
   color: var(--color-ink);
 }
+

@@ -18,8 +18,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${poppins.variable} antialiased`}>
       <body className="font-sans">
-        {/* El diseño es mobile: en pantallas grandes se centra en una columna. */}
-        <div className="mx-auto min-h-dvh max-w-[414px]">{children}</div>
+        {/* El diseño es mobile: en pantallas grandes se muestra la misma interfaz
+            en una columna centrada de 430 px, sobre el fondo neutro del body. */}
+        <div className="mx-auto min-h-dvh max-w-[430px] bg-background">{children}</div>
       </body>
     </html>
   );
