@@ -43,7 +43,10 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
         <SearchInput defaultValue={q} type={type} />
       </div>
 
-      <nav aria-label="Filtrar por tipo" className="-mx-5 mt-5 flex gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none]">
+      {/* Los 4 filtros entran completos en la columna de 430 px: con mouse el
+          scroll horizontal no es evidente. overflow-x-auto queda solo para
+          celulares muy angostos. */}
+      <nav aria-label="Filtrar por tipo" className="-mx-5 mt-5 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none]">
         {filters.map((filter) => {
           const active = filter.type === type;
           return (
@@ -53,7 +56,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
               replace
               scroll={false}
               aria-current={active ? "page" : undefined}
-              className={`shrink-0 rounded-2xl px-5 py-3 text-sm font-medium ${
+              className={`shrink-0 rounded-2xl px-3.5 py-3 text-sm font-medium ${
                 active ? "bg-granate text-white" : "bg-white text-black shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
               }`}
             >

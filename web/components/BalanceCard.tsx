@@ -12,6 +12,9 @@ export default function BalanceCard({ card }: { card: Card }) {
           alt={card.brand === "VISA" ? "Visa" : "Mastercard"}
           width={35}
           height={25}
+          // visa.svg es cuadrado (con margen arriba y abajo): object-cover lo
+          // recorta a 35×25 para que no empuje el saldo hacia abajo.
+          className="h-[25px] w-[35px] object-cover"
         />
       </div>
 
