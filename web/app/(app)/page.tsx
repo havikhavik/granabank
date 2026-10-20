@@ -27,8 +27,14 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* Si hay más de una tarjeta, se deslizan horizontalmente. */}
-      <section aria-label="Tarjetas" className="-mx-6 mt-7 flex snap-x gap-4 overflow-x-auto px-6">
+      {/* Carrusel solo con CSS: overflow-x para deslizar y scroll snap para que
+          cada tarjeta quede alineada al soltar. La siguiente asoma a la derecha.
+          scroll-px-6 hace que el snap respete el margen (sin él, la tarjeta
+          quedaría pegada al borde de la pantalla). */}
+      <section
+        aria-label="Tarjetas"
+        className="-mx-6 mt-7 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6"
+      >
         {me.cards.map((card) => (
           <BalanceCard key={card.id} card={card} />
         ))}
