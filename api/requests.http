@@ -46,6 +46,10 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/movements?type=FOO
 Authorization: Bearer {{token}}
 
+### Búsqueda de más de 100 caracteres → 400
+GET {{baseUrl}}/movements?q=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Authorization: Bearer {{token}}
+
 ### Detalle de un movimiento propio → 200
 GET {{baseUrl}}/movements/1
 Authorization: Bearer {{token}}

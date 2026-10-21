@@ -12,8 +12,10 @@ const router = Router();
 const DUMMY_HASH = '$2b$10$CML1xQCn5hOd14nLSWGqo.5bEBuWpIP7btEU6w9QPxsuRN9HvkQry';
 
 const loginSchema = z.object({
-  email: z.email(),
-  password: z.string().min(1),
+  // Topes de largo: email como la columna (255); password generoso, pero acotado
+  // para no procesar bodies arbitrarios.
+  email: z.email().max(255),
+  password: z.string().min(1).max(128),
 });
 
 router.post('/login', async (req, res) => {

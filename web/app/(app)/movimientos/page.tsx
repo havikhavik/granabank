@@ -32,7 +32,9 @@ function movementsHref(q: string, type?: MovementType) {
 // sobreviven a un refresh y el botón "atrás" funciona.
 export default async function MovementsPage({ searchParams }: PageProps<"/movimientos">) {
   const params = await searchParams;
-  const q = typeof params.q === "string" ? params.q.trim() : "";
+  // Se recorta a 100, el máximo que acepta la API, para que una URL armada a
+  // mano no termine en la pantalla de error.
+  const q = typeof params.q === "string" ? params.q.trim().slice(0, 100) : "";
   // Un type desconocido en la URL se ignora en vez de mandarlo a la API (que daría 400).
   const type = filters.find((f) => f.type && f.type === params.type)?.type;
 

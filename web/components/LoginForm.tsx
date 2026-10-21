@@ -21,6 +21,7 @@ export default function LoginForm() {
           name="email"
           type="email"
           required
+          maxLength={255}
           autoComplete="email"
           placeholder="Ingresa tu email"
           defaultValue={state?.email}
@@ -34,6 +35,7 @@ export default function LoginForm() {
           name="password"
           type="password"
           required
+          maxLength={128}
           autoComplete="current-password"
           placeholder="Ingresa tu contraseña"
           className={inputClass}

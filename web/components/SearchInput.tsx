@@ -48,6 +48,7 @@ export default function SearchInput({ defaultValue }: { defaultValue: string }) 
       <input
         ref={input}
         type="search"
+        maxLength={100}
         defaultValue={defaultValue}
         onChange={(e) => handleChange(e.target.value)}
         placeholder="Ingresa un nombre o servicio"
