@@ -15,6 +15,13 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
   const password = String(formData.get("password") ?? "");
   const remember = formData.get("remember") === "on";
 
+  if (!email || !password) {
+    return { error: "Completá el email y la contraseña.", email };
+  }
+  if (!email.includes("@")) {
+    return { error: "El email tiene que tener una @, por ejemplo nombre@dominio.com.", email };
+  }
+
   let res: Response;
   try {
     res = await fetch(`${process.env.API_URL}/auth/login`, {
