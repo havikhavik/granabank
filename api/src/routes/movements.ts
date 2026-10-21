@@ -7,7 +7,8 @@ import { Card, Movement, MovementType } from '../models/index.js';
 const router = Router();
 
 const listQuerySchema = z.object({
-  q: z.string().trim().optional(),
+  // 100 es el largo de la columna counterparty: más largo no puede coincidir.
+  q: z.string().trim().max(100).optional(),
   type: z.enum(['SUBSCRIPTION', 'CASH_IN', 'CASH_OUT']).optional(),
   // Los query params llegan como string: coerce los convierte a número.
   limit: z.coerce.number().int().min(1).max(50).default(20),

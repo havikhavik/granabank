@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import BackLink from "@/components/BackLink";
-import { typeStyles } from "@/components/MovementItem";
+import { getTypeStyle } from "@/components/MovementItem";
 import { apiGet, type MovementDetail } from "@/lib/api";
 import { formatAmount, formatDateTime } from "@/lib/format";
 
@@ -12,7 +12,7 @@ export default async function MovementDetailPage({ params }: PageProps<"/movimie
 
   // Si la API responde 404 (inexistente o ajeno), apiGet llama a notFound().
   const movement = await apiGet<MovementDetail>(`/movements/${id}`);
-  const { Icon, text, bg } = typeStyles[movement.type.code];
+  const { Icon, text, bg } = getTypeStyle(movement.type.code);
 
   return (
     <main className="px-5 pt-7">

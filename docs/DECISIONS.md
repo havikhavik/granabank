@@ -43,6 +43,16 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 
 **Validación estricta con Zod.** Un `type` o un `limit` fuera de rango responde 400 en lugar de corregirse en silencio, para que el cliente detecte el error.
 
+**Topes de longitud en los inputs.** La búsqueda acepta hasta 100 caracteres (el largo de `counterparty`), el email 255 y la contraseña 128, así no se procesan textos arbitrarios.
+
+**La API no arranca sin `JWT_SECRET`.** Es preferible un error explícito al desplegar que una API que responde `/health` pero falla en cada login.
+
+**El login tarda lo mismo exista o no el email.** Si el email no existe, igual se compara la contraseña contra un hash fijo con bcrypt; si no, la diferencia de tiempo (~70 ms) revelaría qué emails están registrados. Costo: cada intento fallido usa CPU de bcrypt.
+
+**Sin rate limiting en el login.** En producción se limitarían los intentos por IP y por email para frenar ataques de fuerza bruta; queda fuera del alcance del challenge.
+
+**Sin el header `X-Powered-By`** en la API ni en la web, para no anunciar el stack.
+
 ## Web
 
 **El JWT vive en una cookie `httpOnly` y solo lo usa el servidor de Next.** Los datos se piden desde Server Components y el login y el logout son Server Actions, así que el token nunca queda expuesto al JavaScript del navegador (protege contra XSS) y la API no necesita CORS. Costo: cada interacción pasa por el servidor de Next antes de llegar a la API.
@@ -70,6 +80,18 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **Los filtros rápidos se muestran completos** (sin scroll horizontal) para que sean accesibles sin el gesto de deslizar: con mouse, el scroll horizontal no es evidente.
 
 **El login se valida en la Server Action, no con la validación nativa del navegador** (`noValidate`). El aviso nativo es poco visible y depende del navegador, así que el botón parecía no responder; ahora el formulario siempre se envía y el error se muestra en el mismo lugar que "Email o contraseña incorrectos". La API sigue validando con Zod. Costo: un viaje al servidor para detectar un error de formato.
+
+**`proxy.ts` protege todo salvo `/login` y los archivos estáticos.** Una página nueva queda protegida sin agregarla a una lista. Además, `apiGet` redirige al login ante un 401, así que la protección no depende solo del proxy.
+
+**Un tipo de movimiento que la web no conoce se muestra con un estilo neutro** y el `label` que manda la API, sin suponer si es un ingreso o un egreso. La lista no se rompe si se agrega un tipo en la tabla; para filtrar por él sí hay que sumarlo al filtro de la API y a los filtros rápidos.
+
+**Las llamadas a la API se cortan a los 10 segundos.** Si la API no responde, se muestra el error con "Reintentar" en lugar de dejar la página cargando.
+
+**Un movimiento inexistente muestra la página "no encontrado" con status HTTP 200.** Con `loading.tsx` la respuesta empieza a enviarse antes de saber si el movimiento existe, y el status ya no se puede cambiar; Next agrega `noindex`.
+
+**Los textos secundarios usan el gris del diseño (`#aaa`)**, con un contraste de ~2.3:1, por debajo del 4.5:1 que pide WCAG AA. Se respeta el diseño; para cumplir AA habría que oscurecerlo.
+
+**Los tipos de la API se repiten en `web/lib/api.ts`.** Sin workspaces no hay un paquete compartido entre `api/` y `web/`; con un esquema OpenAPI se podrían generar.
 
 ## Deploy
 

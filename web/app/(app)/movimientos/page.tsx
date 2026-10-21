@@ -3,9 +3,10 @@ import { Suspense } from "react";
 import MovementItem from "@/components/MovementItem";
 import MovementListSkeleton from "@/components/MovementListSkeleton";
 import SearchInput from "@/components/SearchInput";
-import { apiGet, type Movement, type MovementList } from "@/lib/api";
+import { apiGet, type MovementList } from "@/lib/api";
 
-type MovementType = Movement["type"]["code"];
+// Los tipos que tienen un filtro rápido en el diseño.
+type MovementType = "SUBSCRIPTION" | "CASH_IN" | "CASH_OUT";
 
 // Filtros rápidos del diseño. "Todos" no manda type.
 const filters: { label: string; type?: MovementType }[] = [
@@ -31,7 +32,9 @@ function movementsHref(q: string, type?: MovementType) {
 // sobreviven a un refresh y el botón "atrás" funciona.
 export default async function MovementsPage({ searchParams }: PageProps<"/movimientos">) {
   const params = await searchParams;
-  const q = typeof params.q === "string" ? params.q.trim() : "";
+  // Se recorta a 100, el máximo que acepta la API, para que una URL armada a
+  // mano no termine en la pantalla de error.
+  const q = typeof params.q === "string" ? params.q.trim().slice(0, 100) : "";
   // Un type desconocido en la URL se ignora en vez de mandarlo a la API (que daría 400).
   const type = filters.find((f) => f.type && f.type === params.type)?.type;
 
@@ -40,7 +43,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
       <h1 className="text-xl text-ink">Movimientos</h1>
 
       <div className="mt-5">
-        <SearchInput defaultValue={q} type={type} />
+        <SearchInput defaultValue={q} />
       </div>
 
       {/* Los 4 filtros entran completos en la columna de 430 px: con mouse el
