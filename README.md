@@ -36,6 +36,14 @@ npm run dev                  # http://localhost:3000
 
 Credenciales: `soygranate@clublanus.com` / `GRANATE1@`.
 
+### Deploy
+
+Dos proyectos de Vercel conectados a este repo, con Root Directory `api` y `web`, y funciones en São Paulo (`gru1`, ver `vercel.json`), igual que la base de Neon.
+
+- API: variables `DATABASE_URL` (pooled de la branch de producción) y `JWT_SECRET`.
+- Web: variable `API_URL` (URL de la API, sin barra final).
+- Base de producción: `DATABASE_URL_DIRECT='<url directa>' npm run db:migrate && npm run db:seed:all` desde `api/` (la variable del entorno tiene prioridad sobre el `.env`).
+
 ## Arquitectura
 
 ![Diagrama entidad-relación](docs/DER.png)
