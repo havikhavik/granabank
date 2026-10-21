@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken'
 
 const router = Router();
 
+// Hash bcrypt de un texto aleatorio que nadie conoce, con el mismo costo (10)
+// que las contraseñas reales. Ver su uso en el login.
+const DUMMY_HASH = '$2b$10$CML1xQCn5hOd14nLSWGqo.5bEBuWpIP7btEU6w9QPxsuRN9HvkQry';
+
 const loginSchema = z.object({
   email: z.email(),
   password: z.string().min(1),
@@ -16,6 +20,9 @@ router.post('/login', async (req, res) => {
   const { email, password } = loginSchema.parse(req.body);
 
   const user = await User.findOne({ where: { email: email.toLowerCase() } });
+  // Si el email no existe, igual se corre bcrypt (contra un hash que no coincide):
+  // así la respuesta tarda lo mismo y el tiempo no revela qué emails existen.
+  if (!user) await bcrypt.compare(password, DUMMY_HASH);
   const token = user && (await createTokenIfPasswordMatches(user, password));
 
   // Mismo error si el email no existe o si la contraseña es incorrecta:
