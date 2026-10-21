@@ -51,9 +51,10 @@ export async function apiGet<T>(path: string): Promise<T> {
     cache: "no-store",
   });
 
-  // Token vencido o inválido: hay que volver a iniciar sesión.
+  // Token vencido o inválido: hay que volver a iniciar sesión. ?expired le avisa
+  // al proxy que borre la cookie (un Server Component no puede modificarla).
   if (res.status === 401) {
-    redirect("/login");
+    redirect("/login?expired=1");
   }
 
   // Recurso inexistente (o ajeno: la API responde 404 igual). Muestra el
