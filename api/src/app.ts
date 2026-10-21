@@ -5,6 +5,13 @@ import authRouter from './routes/auth.js';
 import meRouter from './routes/me.js';
 import movementsRouter from './routes/movements.js';
 
+// Sin secreto no se pueden firmar ni verificar tokens: mejor no arrancar que
+// fallar en cada login. Va acá y no en middlewares/auth.ts porque los imports
+// se evalúan antes que este código, y db.ts ya cargó el .env.
+if (!process.env.JWT_SECRET) {
+  throw new Error('Falta la variable de entorno JWT_SECRET');
+}
+
 const app = express();
 
 app.use(express.json());
