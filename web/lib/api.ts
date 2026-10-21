@@ -5,6 +5,10 @@ import { notFound, redirect } from "next/navigation";
 // Nombre de la cookie httpOnly donde se guarda el JWT.
 export const SESSION_COOKIE = "session";
 
+// Si la API no responde en este tiempo, el fetch se corta y se muestra el error
+// (con "Reintentar") en vez de dejar la página cargando indefinidamente.
+export const API_TIMEOUT_MS = 10_000;
+
 // Tipos de las respuestas de la API (ver contrato en el README).
 export type Card = {
   id: number;
@@ -46,11 +50,14 @@ export type MovementDetail = Movement & {
 // el token nunca llega al JavaScript del navegador.
 export async function apiGet<T>(path: string): Promise<T> {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
+  // El proxy ya lo evita, pero sin cookie no tiene sentido llamar a la API.
+  if (!token) redirect("/login");
 
   const res = await fetch(`${process.env.API_URL}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
     // Datos personales y dinámicos: nunca se cachean.
     cache: "no-store",
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
 
   // Token vencido o inválido: hay que volver a iniciar sesión. ?expired le avisa

@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SESSION_COOKIE } from "./api";
+import { API_TIMEOUT_MS, SESSION_COOKIE } from "./api";
 
 // Lo que la acción le devuelve al formulario: el error a mostrar y el email
 // ingresado, para no borrarlo cuando el login falla.
@@ -28,8 +28,10 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
+      signal: AbortSignal.timeout(API_TIMEOUT_MS),
     });
   } catch {
+    // La API está caída o no respondió a tiempo.
     return { error: "No pudimos conectarnos. Probá de nuevo en unos minutos.", email };
   }
 
