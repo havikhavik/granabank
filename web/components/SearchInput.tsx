@@ -43,7 +43,8 @@ export default function SearchInput({ defaultValue }: { defaultValue: string }) 
   }
 
   return (
-    <label className="flex h-[60px] items-center gap-4 rounded-2xl bg-white px-4 shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
+    // El input no tiene outline: el anillo de foco va en el label, que lo envuelve.
+    <label className="flex h-[60px] items-center gap-4 rounded-2xl bg-white px-4 shadow-[0_8px_24px_rgba(0,0,0,0.05)] focus-within:ring-2 focus-within:ring-granate/30">
       <Search size={22} className="shrink-0 text-muted" aria-hidden />
       <input
         ref={input}
