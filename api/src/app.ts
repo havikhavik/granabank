@@ -14,6 +14,8 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 
+// Express manda "X-Powered-By: Express" por defecto: no hace falta anunciar el stack.
+app.disable('x-powered-by');
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
