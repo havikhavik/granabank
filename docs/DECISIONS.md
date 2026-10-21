@@ -66,3 +66,11 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **En pantallas grandes se muestra la misma interfaz mobile**, en una columna centrada de 430 px sobre un fondo neutro. El diseño es para celular: así se respeta tal cual, sin mantener un segundo layout. Costo: en escritorio se desaprovecha el ancho.
 
 **Los filtros rápidos se muestran completos** (sin scroll horizontal) para que sean accesibles sin el gesto de deslizar: con mouse, el scroll horizontal no es evidente.
+
+## Deploy
+
+**API y web en dos proyectos de Vercel**, cada uno con su Root Directory (`api` y `web`). La API se despliega con la detección automática de Express, que usa la app exportada en `src/app.ts`, y queda como una única función serverless.
+
+**Funciones en São Paulo (`gru1`)**, la misma región que la base de Neon (`sa-east-1`). Cada request de la web hace al menos un viaje a la API y otro a la base, así que tenerlos cerca reduce la latencia. Se configura en un `vercel.json` de una línea por proyecto, versionado junto al código.
+
+**Dos branches de Neon:** `dev` para desarrollo y `main` para producción. Las migraciones y el seed se corren con la misma CLI apuntando a cada una, así los datos de prueba nunca se mezclan con los de la demo.
