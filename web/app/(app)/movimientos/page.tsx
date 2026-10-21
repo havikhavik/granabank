@@ -41,7 +41,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
       <h1 className="text-xl text-ink">Movimientos</h1>
 
       <div className="mt-5">
-        <SearchInput defaultValue={q} type={type} />
+        <SearchInput defaultValue={q} />
       </div>
 
       {/* Los 4 filtros entran completos en la columna de 430 px: con mouse el

@@ -2,23 +2,29 @@
 
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 // Client Component porque reacciona a lo que se tipea. No pide datos: solo
 // cambia ?q= en la URL y la página (Server Component) vuelve a buscar.
-export default function SearchInput({ defaultValue, type }: { defaultValue: string; type?: string }) {
+export default function SearchInput({ defaultValue }: { defaultValue: string }) {
   const router = useRouter();
   // Guarda el timer entre renders sin provocar un re-render (no es estado).
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  // Si el usuario se va de la página con una búsqueda pendiente, se cancela:
+  // si no, el timer dispararía igual y lo traería de vuelta a Movimientos.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   // Debounce: cada tecla cancela el timer anterior, así solo se navega cuando
   // el usuario deja de tipear por 300 ms (y no se pide a la API por cada letra).
   function handleChange(value: string) {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      const params = new URLSearchParams();
+      // Parte de la URL de este momento y no de la del render: si el usuario
+      // cambió el filtro mientras tipeaba, se conserva.
+      const params = new URLSearchParams(window.location.search);
       if (value.trim()) params.set("q", value.trim());
-      if (type) params.set("type", type); // conserva el filtro activo
+      else params.delete("q");
       // replace y no push: cada búsqueda no agrega una entrada al historial.
       router.replace(`/movimientos?${params}`, { scroll: false });
     }, 300);
