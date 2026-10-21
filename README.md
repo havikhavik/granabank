@@ -42,7 +42,13 @@ Dos proyectos de Vercel conectados a este repo, con Root Directory `api` y `web`
 
 - API: variables `DATABASE_URL` (pooled de la branch de producción) y `JWT_SECRET`.
 - Web: variable `API_URL` (URL de la API, sin barra final).
-- Base de producción: `DATABASE_URL_DIRECT='<url directa>' npm run db:migrate && npm run db:seed:all` desde `api/` (la variable del entorno tiene prioridad sobre el `.env`).
+- Base de producción, desde `api/` (una variable exportada tiene prioridad sobre el `.env`):
+
+  ```bash
+  export DATABASE_URL_DIRECT='<url directa de producción>'
+  npm run db:migrate && npm run db:seed:all
+  unset DATABASE_URL_DIRECT
+  ```
 
 ## Arquitectura
 
