@@ -67,6 +67,8 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 
 **Los filtros rápidos se muestran completos** (sin scroll horizontal) para que sean accesibles sin el gesto de deslizar: con mouse, el scroll horizontal no es evidente.
 
+**El login se valida en la Server Action, no con la validación nativa del navegador** (`noValidate`). El aviso nativo es poco visible y depende del navegador, así que el botón parecía no responder; ahora el formulario siempre se envía y el error se muestra en el mismo lugar que "Email o contraseña incorrectos". La API sigue validando con Zod. Costo: un viaje al servidor para detectar un error de formato.
+
 ## Deploy
 
 **API y web en dos proyectos de Vercel**, cada uno con su Root Directory (`api` y `web`). La API se despliega con la detección automática de Express, que usa la app exportada en `src/app.ts`, y queda como una única función serverless.

@@ -12,7 +12,9 @@ export default function LoginForm() {
   const [state, formAction, pending] = useActionState(login, undefined);
 
   return (
-    <form action={formAction} className="mt-16 flex flex-1 flex-col">
+    // noValidate: sin la validación nativa del navegador (su aviso casi no se ve),
+    // el formulario siempre se envía y la Server Action explica qué está mal.
+    <form action={formAction} noValidate className="mt-16 flex flex-1 flex-col">
       <label className="font-medium text-[#4c5869]">
         Email
         <input
