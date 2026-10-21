@@ -1,8 +1,6 @@
 // Solo para desarrollo local. En Vercel se usa directamente la app exportada en app.ts.
-import dotenv from 'dotenv';
+// El .env ya lo cargó db.ts, que se evalúa al importar app.
 import app from './app.js';
-
-dotenv.config({ quiet: true });
 
 const port = Number(process.env.PORT) || 3001;
 

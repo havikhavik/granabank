@@ -9,7 +9,7 @@ export const SESSION_COOKIE = "session";
 // (con "Reintentar") en vez de dejar la página cargando indefinidamente.
 export const API_TIMEOUT_MS = 10_000;
 
-// Tipos de las respuestas de la API (ver contrato en el README).
+// Tipos de las respuestas de la API: copian lo que arman las rutas de api/src/routes.
 export type Card = {
   id: number;
   holderName: string;
