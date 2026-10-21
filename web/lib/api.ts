@@ -27,7 +27,9 @@ export type Movement = {
   counterparty: string;
   amount: string;
   occurredAt: string;
-  type: { code: "SUBSCRIPTION" | "CASH_IN" | "CASH_OUT"; label: string; isNegative: boolean };
+  // string y no la unión de los 3 códigos: los tipos viven en una tabla y
+  // pueden aparecer otros. La web los muestra con un estilo neutro.
+  type: { code: string; label: string; isNegative: boolean };
 };
 
 export type MovementList = {

@@ -3,9 +3,10 @@ import { Suspense } from "react";
 import MovementItem from "@/components/MovementItem";
 import MovementListSkeleton from "@/components/MovementListSkeleton";
 import SearchInput from "@/components/SearchInput";
-import { apiGet, type Movement, type MovementList } from "@/lib/api";
+import { apiGet, type MovementList } from "@/lib/api";
 
-type MovementType = Movement["type"]["code"];
+// Los tipos que tienen un filtro rápido en el diseño.
+type MovementType = "SUBSCRIPTION" | "CASH_IN" | "CASH_OUT";
 
 // Filtros rápidos del diseño. "Todos" no manda type.
 const filters: { label: string; type?: MovementType }[] = [

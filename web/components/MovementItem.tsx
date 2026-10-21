@@ -1,19 +1,28 @@
-import { ArrowDown, ArrowDownUp, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowDownUp, ArrowUp, CircleDollarSign } from "lucide-react";
 import Link from "next/link";
 import type { Movement } from "@/lib/api";
 import { formatAmount } from "@/lib/format";
 
 // Ícono y colores por tipo de movimiento. Las clases van completas (no armadas
 // con strings) porque Tailwind solo genera las clases que encuentra literales.
-// También lo usa el detalle del movimiento.
-export const typeStyles = {
+const typeStyles = {
   SUBSCRIPTION: { Icon: ArrowDownUp, text: "text-subscription", bg: "bg-subscription-bg" },
   CASH_IN: { Icon: ArrowDown, text: "text-cash-in", bg: "bg-cash-in-bg" },
   CASH_OUT: { Icon: ArrowUp, text: "text-cash-out", bg: "bg-cash-out-bg" },
 };
 
+// Un tipo que la web todavía no conoce (se agregó en la tabla): estilo neutro,
+// sin suponer si es un ingreso o un egreso. El texto sigue siendo el label de la API.
+const unknownTypeStyle = { Icon: CircleDollarSign, text: "text-ink-soft", bg: "bg-gray-100" };
+
+// Object.hasOwn evita que un code como "toString" devuelva algo heredado de Object.
+// También lo usa el detalle del movimiento.
+export function getTypeStyle(code: string) {
+  return Object.hasOwn(typeStyles, code) ? typeStyles[code as keyof typeof typeStyles] : unknownTypeStyle;
+}
+
 export default function MovementItem({ movement }: { movement: Movement }) {
-  const { Icon, text, bg } = typeStyles[movement.type.code];
+  const { Icon, text, bg } = getTypeStyle(movement.type.code);
 
   return (
     <Link
