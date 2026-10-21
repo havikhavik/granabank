@@ -49,6 +49,8 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 
 **`proxy.ts` solo verifica que exista la cookie.** Es un chequeo rápido para redirigir a `/login`; la validación real del token la hace la API, y si responde 401 la web redirige al login. Costo: con un token vencido, la página empieza a renderizarse antes de redirigir.
 
+**Con sesión, `/login` redirige a la Home.** Para no generar un bucle cuando la cookie existe pero el token ya no sirve (`/` → `/login` → `/`...), `apiGet` redirige a `/login?expired=1` ante un 401 y el proxy borra la cookie en ese caso, porque un Server Component no puede modificar cookies.
+
 **Sin caché de datos.** Las páginas se renderizan en cada request y los `fetch` usan `cache: 'no-store'`, porque son datos personales que cambian. Costo: cada visita consulta la API.
 
 **La búsqueda y el filtro viven en la URL** (`?q=&type=`). La lista se arma en el servidor leyendo `searchParams`, así que se puede compartir, sobrevive a un refresh y el botón "atrás" funciona; el buscador solo actualiza la URL, con un debounce de 300 ms para no consultar la API en cada tecla.
