@@ -26,6 +26,8 @@ export function proxy(request: NextRequest) {
   }
 }
 
+// Protege todo salvo los archivos estáticos (JS, CSS, imágenes y los .svg de
+// public/): una página nueva queda protegida sin acordarse de agregarla acá.
 export const config = {
-  matcher: ["/", "/login", "/movimientos/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon\\.ico|.*\\.svg$).*)"],
 };
