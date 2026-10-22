@@ -1,4 +1,3 @@
-// Le indica a sequelize-cli dónde están la config, las migraciones y los seeders.
 const path = require('path');
 
 module.exports = {

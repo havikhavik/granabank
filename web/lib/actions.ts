@@ -6,7 +6,7 @@ import { API_TIMEOUT_MS, SESSION_COOKIE } from "./api";
 
 // Lo que la acción le devuelve al formulario: el error a mostrar y el email
 // ingresado, para no borrarlo cuando el login falla.
-export type LoginState = { error: string; email: string } | undefined;
+type LoginState = { error: string; email: string } | undefined;
 
 const SEVEN_DAYS = 60 * 60 * 24 * 7; // igual a la expiración del JWT
 

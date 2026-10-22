@@ -23,12 +23,10 @@ router.post('/login', async (req, res) => {
 
   const user = await User.findOne({ where: { email: email.toLowerCase() } });
   // Si el email no existe, igual se corre bcrypt (contra un hash que no coincide):
-  // así la respuesta tarda lo mismo y el tiempo no revela qué emails existen.
+  // ni el tiempo ni el error revelan qué emails están registrados.
   if (!user) await bcrypt.compare(password, DUMMY_HASH);
   const token = user && (await createTokenIfPasswordMatches(user, password));
 
-  // Mismo error si el email no existe o si la contraseña es incorrecta:
-  // así no se revela qué emails están registrados.
   if (!user || !token) {
     throw new HttpError(401, 'INVALID_CREDENTIALS', 'Email o contraseña incorrectos');
   }
@@ -36,10 +34,7 @@ router.post('/login', async (req, res) => {
   res.json({ token, user: { id: user.id, name: user.name } });
 });
 
-// Compara la contraseña con el hash guardado y, si coincide, firma el JWT.
-// Devuelve el token, o null si la contraseña es incorrecta.
-// El token lleva el id del usuario en `sub` (como string), firmado con
-// JWT_SECRET y con vencimiento de 7 días: requireAuth lo lee así.
+// Devuelve el JWT (id del usuario en `sub`, 7 días) o null si la contraseña no coincide.
 async function createTokenIfPasswordMatches(user: User, password: string): Promise<string | null> {
   const passwordMatches = await bcrypt.compare(password, user.passwordHash);
   if (!passwordMatches) return null;

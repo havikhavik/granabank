@@ -115,4 +115,4 @@ Ver [docs/DECISIONS.md](docs/DECISIONS.md): modelo de datos, autenticación, man
 - **Backlog en GitHub Issues**, con criterios de aceptación y dos milestones: `Sprint 1 - API` y `Sprint 2 - Web y entrega`.
 - **Una rama por issue** y commits con Conventional Commits. Cada rama se integró con un PR que cierra su issue (squash merge).
 - Empecé por el modelo de datos y el contrato de la API, y después construí la web sobre ese contrato.
-- Usé un asistente de IA para acelerar la implementación. Las decisiones de diseño las tomé yo, revisé todo el código y escribí las partes críticas de seguridad: la comparación de contraseñas con bcrypt, la firma del JWT y la verificación de que un movimiento pertenezca al usuario.
+- Usé un asistente de IA para acelerar la implementación. Las decisiones técnicas las tomé yo, revisé todo el código y escribí las partes críticas de seguridad: la comparación de contraseñas con bcrypt, la firma del JWT y la verificación de que un movimiento pertenezca al usuario.

@@ -16,7 +16,6 @@ const typeStyles = {
 const unknownTypeStyle = { Icon: CircleDollarSign, text: "text-ink-soft", bg: "bg-gray-100" };
 
 // Object.hasOwn evita que un code como "toString" devuelva algo heredado de Object.
-// También lo usa el detalle del movimiento.
 export function getTypeStyle(code: string) {
   return Object.hasOwn(typeStyles, code) ? typeStyles[code as keyof typeof typeStyles] : unknownTypeStyle;
 }
@@ -27,7 +26,7 @@ export default function MovementItem({ movement }: { movement: Movement }) {
   return (
     <Link
       href={`/movimientos/${movement.id}`}
-      className="flex items-center gap-4 rounded-2xl bg-white px-4 py-6 shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+      className="flex items-center gap-4 rounded-2xl bg-white px-4 py-6 shadow-card"
     >
       <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${bg} ${text}`}>
         <Icon size={20} strokeWidth={2.75} />

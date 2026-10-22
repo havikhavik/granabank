@@ -16,7 +16,7 @@ const filters: { label: string; type?: MovementType }[] = [
   { label: "Enviado", type: "CASH_OUT" },
 ];
 
-// Por ahora se piden hasta 50 (el máximo de la API), sin paginar.
+// El máximo de la API; sin paginación (ver docs/DECISIONS.md).
 const LIMIT = 50;
 
 // Arma la URL de la lista con los filtros que tengan valor.
@@ -36,7 +36,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
   // mano no termine en la pantalla de error.
   const q = typeof params.q === "string" ? params.q.trim().slice(0, 100) : "";
   // Un type desconocido en la URL se ignora en vez de mandarlo a la API (que daría 400).
-  const type = filters.find((f) => f.type && f.type === params.type)?.type;
+  const type = filters.find((f) => f.type === params.type)?.type;
 
   return (
     <main className="px-5 pt-7">
@@ -46,9 +46,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
         <SearchInput defaultValue={q} />
       </div>
 
-      {/* Los 4 filtros entran completos en la columna de 430 px: con mouse el
-          scroll horizontal no es evidente. overflow-x-auto queda solo para
-          celulares muy angostos. */}
+      {/* Entran completos en 430 px; overflow-x solo para pantallas muy angostas. */}
       <nav aria-label="Filtrar por tipo" className="-mx-5 mt-5 flex gap-2 overflow-x-auto px-5 pb-2 [scrollbar-width:none]">
         {filters.map((filter) => {
           const active = filter.type === type;
@@ -60,7 +58,7 @@ export default async function MovementsPage({ searchParams }: PageProps<"/movimi
               scroll={false}
               aria-current={active ? "page" : undefined}
               className={`shrink-0 rounded-2xl px-3.5 py-3 text-sm font-medium ${
-                active ? "bg-granate text-white" : "bg-white text-black shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                active ? "bg-granate text-white" : "bg-white text-black shadow-card"
               }`}
             >
               {filter.label}

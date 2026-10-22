@@ -15,17 +15,23 @@
   --color-cash-out: #ef9c55;
   --color-cash-out-bg: #feead4;
 
+  --color-ink-strong: #071529;
+  --color-label: #4c5869;
+  --color-subtitle: #717e95;
+  --color-backdrop: #e5e7eb;
+
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.05);
+
   --font-sans: var(--font-poppins);
 }
 
 /* Fondo neutro fuera de la columna de la app (solo se ve en pantallas anchas). */
 body {
-  background: #e5e7eb;
+  background: var(--color-backdrop);
   color: var(--color-ink);
 }
 
-/* Tailwind v4 ya no pone cursor: pointer en los botones (el navegador usa el
-   cursor por defecto). Los links sí lo tienen, por eso solo fallaba el logout. */
+/* Tailwind v4 ya no pone cursor: pointer en los botones. */
 @layer base {
   button:not(:disabled) {
     cursor: pointer;

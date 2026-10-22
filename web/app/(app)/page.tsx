@@ -23,8 +23,6 @@ export default async function HomePage() {
           <Link href="/movimientos" aria-label="Buscar movimientos">
             <Search size={22} strokeWidth={2} className="text-ink" />
           </Link>
-          {/* Popover API nativa: abre/cierra sin JS y se cierra solo con Esc o
-              al tocar afuera. Se ubica a la derecha de la columna de 430 px. */}
           <button type="button" popoverTarget="notificaciones" aria-label="Notificaciones">
             <Bell size={22} strokeWidth={2} className="text-ink" />
           </button>
@@ -38,10 +36,6 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* Carrusel solo con CSS: overflow-x para deslizar y scroll snap para que
-          cada tarjeta quede alineada al soltar. La siguiente asoma a la derecha.
-          scroll-px-6 hace que el snap respete el margen (sin él, la tarjeta
-          quedaría pegada al borde de la pantalla). */}
       <section
         aria-label="Tarjetas"
         className="-mx-6 mt-7 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6"

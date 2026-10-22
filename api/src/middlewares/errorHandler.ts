@@ -18,8 +18,8 @@ export const notFound: RequestHandler = (_req, res) => {
   res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Ruta no encontrada' } });
 };
 
-// Middleware de errores centralizado: Express lo reconoce por tener 4 parámetros.
-// En Express 5, los errores de handlers async también llegan acá.
+// En Express 5 los errores de handlers async también llegan acá: las rutas no
+// necesitan try/catch.
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   if (err instanceof HttpError) {
     res.status(err.status).json({ error: { code: err.code, message: err.message } });

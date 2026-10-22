@@ -18,7 +18,7 @@ export default async function MovementDetailPage({ params }: PageProps<"/movimie
     <main className="px-5 pt-7">
       <BackLink />
 
-      <section className="mt-6 flex flex-col items-center rounded-2xl bg-white px-6 py-8 text-center shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
+      <section className="mt-6 flex flex-col items-center rounded-2xl bg-white px-6 py-8 text-center shadow-card">
         <span className={`flex size-16 items-center justify-center rounded-2xl ${bg} ${text}`}>
           <Icon size={28} strokeWidth={2.75} />
         </span>
@@ -29,7 +29,7 @@ export default async function MovementDetailPage({ params }: PageProps<"/movimie
         </p>
       </section>
 
-      <dl className="mt-4 divide-y divide-gray-100 rounded-2xl bg-white px-6 shadow-[0_8px_24px_rgba(0,0,0,0.05)]">
+      <dl className="mt-4 divide-y divide-gray-100 rounded-2xl bg-white px-6 shadow-card">
         <Row label="Fecha">{formatDateTime(movement.occurredAt)}</Row>
         <Row label="Tarjeta">
           {movement.card.brand === "VISA" ? "Visa" : "Mastercard"} •••• {movement.card.last4}
