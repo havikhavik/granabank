@@ -12,6 +12,14 @@ async function login(email: string, password: string) {
 }
 
 describe('API', () => {
+  it('GET /health responde 200 sin cachear', async () => {
+    const res = await request(app).get('/health');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ status: 'ok' });
+    expect(res.headers['cache-control']).toBe('no-store');
+  });
+
   it('login correcto devuelve token y usuario', async () => {
     const res = await request(app)
       .post('/auth/login')
