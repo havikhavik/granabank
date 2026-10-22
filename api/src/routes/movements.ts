@@ -57,7 +57,6 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-// Lista los movimientos de las tarjetas del usuario, con búsqueda, filtro y paginación.
 function listUserMovements(userId: number, { q, type, limit, offset }: z.infer<typeof listQuerySchema>) {
   return Movement.findAndCountAll({
     // Escapa % y _ para que se busquen como texto y no como comodines de LIKE.
@@ -65,7 +64,7 @@ function listUserMovements(userId: number, { q, type, limit, offset }: z.infer<t
     include: [
       // Un include con where es un INNER JOIN: solo quedan los movimientos
       // de tarjetas del usuario autenticado.
-      { model: Card, as: 'card', attributes: [], where: { userId: userId } },
+      { model: Card, as: 'card', attributes: [], where: { userId } },
       { model: MovementType, as: 'type', where: type ? { code: type } : undefined },
     ],
     // El id desempata movimientos con la misma fecha, así la paginación es estable.
@@ -78,10 +77,7 @@ function listUserMovements(userId: number, { q, type, limit, offset }: z.infer<t
   });
 }
 
-// Busca el movimiento por id, pero solo si pertenece a una tarjeta del usuario.
-// Devuelve null si no existe o si es de otro usuario.
-// Tiene que incluir el tipo (as: 'type') y la tarjeta (as: 'card'), porque la
-// respuesta usa movement.type y movement.card.brand / last4.
+// Devuelve null si el movimiento no existe o si es de otro usuario.
 async function findUserMovement(id: number, userId: number): Promise<Movement | null> {
   return Movement.findOne({
     where: { id },

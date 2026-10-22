@@ -17,7 +17,7 @@ export default function LoginForm() {
     // noValidate: sin la validación nativa del navegador (su aviso casi no se ve),
     // el formulario siempre se envía y la Server Action explica qué está mal.
     <form action={formAction} noValidate className="mt-16 flex flex-1 flex-col">
-      <label className="font-medium text-[#4c5869]">
+      <label className="font-medium text-label">
         Email
         <input
           name="email"
@@ -31,7 +31,7 @@ export default function LoginForm() {
         />
       </label>
 
-      <label className="mt-7 font-medium text-[#4c5869]">
+      <label className="mt-7 font-medium text-label">
         Contraseña
         <div className="relative">
           <input
@@ -55,7 +55,7 @@ export default function LoginForm() {
         </div>
       </label>
 
-      <label className="mt-4 flex items-center gap-2 text-sm text-[#a9a9a9]">
+      <label className="mt-4 flex items-center gap-2 text-sm text-muted">
         <input name="remember" type="checkbox" className="size-[18px] rounded accent-granate" />
         Recordarme
       </label>

@@ -25,7 +25,7 @@ export default function BottomNav() {
             href={href}
             aria-label={label}
             aria-current={active ? "page" : undefined}
-            className={`p-2 ${active ? "text-granate" : "text-[#071529]"}`}
+            className={`p-2 ${active ? "text-granate" : "text-ink-strong"}`}
           >
             <Icon size={30} strokeWidth={1.75} />
           </Link>
@@ -34,7 +34,7 @@ export default function BottomNav() {
 
       {/* Un form que llama a la Server Action: funciona incluso sin JavaScript. */}
       <form action={logout}>
-        <button type="submit" aria-label="Cerrar sesión" className="p-2 text-[#071529]">
+        <button type="submit" aria-label="Cerrar sesión" className="p-2 text-ink-strong">
           <LogOut size={30} strokeWidth={1.75} />
         </button>
       </form>

@@ -7,7 +7,7 @@ export default function LoginPage() {
       <div className="flex flex-col items-center text-center">
         <Image src="/granabank.svg" alt="" width={49} height={49} priority />
         <h1 className="mt-5 text-[40px] font-medium tracking-tight text-granate">GranaBank</h1>
-        <p className="mt-4 text-[17px] text-[#717e95]">Con cada compra, sumás orgullo granate</p>
+        <p className="mt-4 text-[17px] text-subtitle">Con cada compra, sumás orgullo granate</p>
       </div>
 
       <LoginForm />

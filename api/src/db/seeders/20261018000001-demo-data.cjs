@@ -26,7 +26,7 @@ const GRANATE_MOVEMENTS = [
   ['Carga inicial', 'CASH_IN', '1500.00', '2026-09-01T09:00:00-03:00', 'Primera carga de la tarjeta'],
 ];
 
-// Segunda tarjeta del usuario del challenge (Visa), con sus propios movimientos.
+// Segunda tarjeta de Granate (Visa), con sus propios movimientos.
 const GRANATE_VISA_MOVEMENTS = [
   ['Tomás Díaz', 'CASH_OUT', '60.00', '2026-10-18T21:30:00-03:00', 'Pizza del sábado'],
   ['Disney+', 'SUBSCRIPTION', '13.99', '2026-10-11T08:00:00-03:00'],
@@ -75,7 +75,7 @@ module.exports = {
       { returning: true },
     );
 
-    // La Visa va al final para no cambiar los ids de las tarjetas ya existentes.
+    // El orden define los ids: requests.http usa /movements/1, que tiene que ser de Granate.
     const cards = [
       { user: granate, holderName: 'Soy Granate', brand: 'MASTERCARD', last4: '1234', expMonth: 2, expYear: 2030, movements: GRANATE_MOVEMENTS },
       { user: other, holderName: 'Otro Usuario', brand: 'VISA', last4: '5678', expMonth: 2, expYear: 2030, movements: OTHER_MOVEMENTS },

@@ -4,8 +4,7 @@ import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-// Client Component porque reacciona a lo que se tipea. No pide datos: solo
-// cambia ?q= en la URL y la página (Server Component) vuelve a buscar.
+// Solo cambia ?q= en la URL: la página vuelve a buscar en el servidor.
 export default function SearchInput({ defaultValue }: { defaultValue: string }) {
   const router = useRouter();
   // Guarda el timer entre renders sin provocar un re-render (no es estado).
@@ -26,8 +25,7 @@ export default function SearchInput({ defaultValue }: { defaultValue: string }) 
     }
   }, [defaultValue]);
 
-  // Debounce: cada tecla cancela el timer anterior, así solo se navega cuando
-  // el usuario deja de tipear por 300 ms (y no se pide a la API por cada letra).
+  // Debounce de 300 ms: navega cuando el usuario deja de tipear.
   function handleChange(value: string) {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
@@ -44,7 +42,7 @@ export default function SearchInput({ defaultValue }: { defaultValue: string }) 
 
   return (
     // El input no tiene outline: el anillo de foco va en el label, que lo envuelve.
-    <label className="flex h-[60px] items-center gap-4 rounded-2xl bg-white px-4 shadow-[0_8px_24px_rgba(0,0,0,0.05)] focus-within:ring-2 focus-within:ring-granate/30">
+    <label className="flex h-[60px] items-center gap-4 rounded-2xl bg-white px-4 shadow-card focus-within:ring-2 focus-within:ring-granate/30">
       <Search size={22} className="shrink-0 text-muted" aria-hidden />
       <input
         ref={input}

@@ -3,7 +3,6 @@ import { Movement } from './Movement.js';
 import { MovementType } from './MovementType.js';
 import { User } from './User.js';
 
-// Asociaciones. La clave foránea siempre va del lado "muchos".
 User.hasMany(Card, { foreignKey: 'userId', as: 'cards' });
 Card.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
