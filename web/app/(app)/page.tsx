@@ -23,7 +23,18 @@ export default async function HomePage() {
           <Link href="/movimientos" aria-label="Buscar movimientos">
             <Search size={22} strokeWidth={2} className="text-ink" />
           </Link>
-          <Bell size={22} strokeWidth={2} className="text-ink" aria-hidden />
+          {/* Popover API nativa: abre/cierra sin JS y se cierra solo con Esc o
+              al tocar afuera. Se ubica a la derecha de la columna de 430 px. */}
+          <button type="button" popoverTarget="notificaciones" aria-label="Notificaciones">
+            <Bell size={22} strokeWidth={2} className="text-ink" />
+          </button>
+          <div
+            id="notificaciones"
+            popover="auto"
+            className="inset-auto top-20 right-[max(1.5rem,calc(50vw-215px+1.5rem))] m-0 rounded-xl bg-white px-4 py-3 text-sm text-ink-soft shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+          >
+            No hay notificaciones
+          </div>
         </div>
       </header>
 
