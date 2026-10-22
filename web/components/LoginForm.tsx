@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useActionState, useState } from "react";
 import { login } from "@/lib/actions";
 
 const inputClass =
@@ -10,6 +11,7 @@ const inputClass =
 // guarda lo que devolvió la Server Action (el error) y si está pendiente.
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState(login, undefined);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     // noValidate: sin la validación nativa del navegador (su aviso casi no se ve),
@@ -31,15 +33,26 @@ export default function LoginForm() {
 
       <label className="mt-7 font-medium text-[#4c5869]">
         Contraseña
-        <input
-          name="password"
-          type="password"
-          required
-          maxLength={128}
-          autoComplete="current-password"
-          placeholder="Ingresa tu contraseña"
-          className={inputClass}
-        />
+        <div className="relative">
+          <input
+            name="password"
+            type={showPassword ? "text" : "password"}
+            required
+            maxLength={128}
+            autoComplete="current-password"
+            placeholder="Ingresa tu contraseña"
+            className={`${inputClass} pr-12`}
+          />
+          {/* type="button" para que no envíe el formulario */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            className="absolute bottom-0 right-0 flex h-[54px] items-center px-4 text-muted"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
       </label>
 
       <label className="mt-4 flex items-center gap-2 text-sm text-[#a9a9a9]">

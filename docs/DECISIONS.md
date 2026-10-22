@@ -100,3 +100,5 @@ Hoy la app no crea movimientos: el seed carga los movimientos y el saldo ya cohe
 **Funciones en São Paulo (`gru1`)**, la misma región que la base de Neon (`sa-east-1`). Cada request de la web hace al menos un viaje a la API y otro a la base, así que tenerlos cerca reduce la latencia. Se configura en un `vercel.json` de una línea por proyecto, versionado junto al código.
 
 **Dos branches de Neon:** `dev` para desarrollo y `main` para producción. Las migraciones y el seed se corren con la misma CLI apuntando a cada una, así los datos de prueba nunca se mezclan con los de la demo.
+
+**Panel de notificaciones con la Popover API nativa** (`popover` + `popoverTarget`): abre y cierra sin JavaScript propio, se cierra con Esc o tocando afuera y se dibuja encima del resto sin moverlo, así la Home sigue siendo un Server Component. Como el diseño no lo define, solo muestra "No hay notificaciones".
