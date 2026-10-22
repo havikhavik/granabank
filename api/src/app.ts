@@ -17,8 +17,9 @@ const app = express();
 app.disable('x-powered-by');
 app.use(express.json());
 
+// Para monitoreo: público, no toca la base y no se cachea en la CDN.
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.set('Cache-Control', 'no-store').json({ status: 'ok' });
 });
 
 app.use('/auth', authRouter);
